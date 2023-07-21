@@ -1,75 +1,88 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
+/// <summary>
+/// 旋转魔方：
+/// 1. 如果拖拽，则跟着鼠标移动方向旋转
+/// 2. 如果拖拽完毕，自动旋转90°
+/// 
+/// 具体实施：
+/// 1. 判断是否拖拽魔方(isDragging, hasDraged)
+/// 2. 定义旋转域(rotateDirction)
+/// 3. 限制只转一次，且平滑完成()
+/// </summary>
 public class Rotate_cube : MonoBehaviour
 {
-    //get mouse movement
-    private Vector2 currentPos;
-    private Vector2 nextPos;
-    
-    //check whether drag the cube or not
-    int layerMask = 1 << 3; 
-    public bool isDraged=false;
-    public bool hasDraged=false;
+    private Vector3 autoRotateDir = Vector3.zero;
+    private bool isDragging = false;
+    private bool hasDragged = false;
+    private Vector2 prePos;
+    private float border = 0.5f;
+    public float rotateSpeed;
+    public GameObject target;
 
-    private Vector3 rotateDirction = Vector3.zero;
-    public int speed;
-
-    void Start()
-    {
-        
-    }
-
-    
-    void Update()
+    private void Update()
     {
         Rotate();
-        print(rotateDirction);
-
     }
 
-    public Vector2 DeltaVector()
+    private void Rotate()
     {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        
-        if (Input.GetMouseButtonDown(0))
+        if (isDragging && !hasDragged)
         {
-            isDraged= true;
-            if (Physics.Raycast(ray, out hit, 1000, layerMask))
+            Vector2 postPos = Input.mousePosition;
+            Vector2 manualDir = new Vector2(-(postPos - prePos).y, (postPos - prePos).x).normalized;
+            transform.rotation = Quaternion.Euler(manualDir * 15 * Time.deltaTime) * transform.rotation;
+            prePos = postPos;
+        }
+        else if (!isDragging && hasDragged)
+        {
+            target.transform.Rotate(autoRotateDir * 90, Space.World);
+            autoRotateDir = Vector3.zero;
+            if (transform.rotation != target.transform.rotation)
             {
-                currentPos = Input.mousePosition;
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, target.transform.rotation, rotateSpeed * Time.deltaTime);
             }
         }
-        if (Input.GetMouseButtonUp(0))
-        {
-            isDraged = false;
-            hasDraged = true;
-            nextPos = Input.mousePosition;
-            return  nextPos - currentPos; 
- 
-        }
-        return Vector2.zero;
     }
 
-    public void Rotate() 
+    private void OnMouseDown()
     {
-        Vector2 delta = DeltaVector();
+        isDragging = true;
+        hasDragged = false;
+        prePos = Input.mousePosition;
+    }
 
-        if (delta.x<0 && delta.y>-0.5f && delta.y<0.5f) rotateDirction = Vector3.up * 90;
-        if (delta.x>0 &&delta.y>-0.5f && delta.y<0.5f) rotateDirction = Vector3.down * 90;
-        //if (delta.y>0 && delta.x < 0) rotateDirction = Vector3.up * 90;
-        //if (delta.y<0 && delta.x > 0) rotateDirction = Vector3.down * 90;
-        //if (delta.y > 0 && delta.x > 0) rotateDirction = Vector3.up * 90;
-        //if (delta.y < 0 && delta.x < 0) rotateDirction = Vector3.down * 90;
+    private void OnMouseUp()
+    {
+        isDragging = false;
+        hasDragged = true;
+        Vector2 currentPos= Input.mousePosition;
+        Vector2 deltaPos = currentPos - prePos;
+        Vector2 deltaNor = deltaPos.normalized;
 
-        if (isDraged == false && hasDraged)
+        if (deltaNor.x < 0 && deltaNor.y > -border && deltaNor.y < border)
         {
-            this.transform.Rotate(rotateDirction);
-            
+            autoRotateDir = Vector3.up; // 左划：向左旋转（0, 1, 0）
         }
-        hasDraged = false;
+        else if (deltaNor.x > 0 && deltaNor.y > -border && deltaNor.y < border)
+        {
+            autoRotateDir = Vector3.down; // 右划：向右旋转（0, -1, 0）
+        }
+        else if (deltaNor.y >= border && deltaNor.x < 0)
+        {
+            autoRotateDir = Vector3.left; // 上左划：向上左旋转（-1, 0, 0）
+        }
+        else if (deltaNor.y <= -border && deltaNor.x > 0)
+        {
+            autoRotateDir = Vector3.right; // 下右划：向下右旋转（1, 0, 0）
+        }
+        else if (deltaNor.y >= border && deltaNor.x > 0)
+        {
+            autoRotateDir = Vector3.forward; // 上右划：向上右旋转（0, 0, 1）
+        }
+        else if (deltaNor.y <= -border && deltaNor.x < 0)
+        {
+            autoRotateDir = Vector3.back; // 下左划：向下左旋转（0, 0, -1）
+        }
     }
 }
