@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
-public class Rotate_cube : MonoBehaviour
+public class RotateCube : MonoBehaviour
 {
     // Variables for tracking mouse movement
     private Vector2 currentPos;
@@ -88,6 +88,7 @@ public class Rotate_cube : MonoBehaviour
         if (isDragging && !hasDragged) // Rotate manually
         {
             postPos = Input.mousePosition;
+
             manualDir.y = -(postPos - prePos).x;
             manualDir.x = -(postPos - prePos).y;
             manualDir = manualDir.normalized;
