@@ -18,45 +18,44 @@ public class CubeMap : MonoBehaviour
     {
         cubeState = FindObjectOfType<ReadSurface>();
 
-        UpdateMap(cubeState.up,up);
-        //UpdateMap(cubeState.down,down);
-        //UpdateMap(cubeState.left, left);
-        //UpdateMap(cubeState.right, right);
-        //UpdateMap(cubeState.front, front);
-        //UpdateMap(cubeState.back,back);
-    }
+        UpdateMap(cubeState.upState,up);
+        UpdateMap(cubeState.downState, down);
+        UpdateMap(cubeState.leftState, left);
+        UpdateMap(cubeState.rightState, right);
+        UpdateMap(cubeState.frontState, front);
+        UpdateMap(cubeState.backState, back);
+    } 
 
     private void UpdateMap(List<GameObject> cuebState, Transform maps)
     {
-        //int i=0;
-        foreach(Transform map in maps)
+        int i = 0;
+        foreach (Transform map in maps)
         {
-            //if (cuebState[i].name[0]=='f')
-            //{
-            //    map.GetComponent<Image>().color = Color.red;
-            //}
-            //else if (cuebState[i].name[0] == 'b')
-            //{
-            //    map.GetComponent<Image>().color =new Color(241,255,0);
-            //}
-            //else if(cuebState[i].name[0] == 'l')
-            //{
-            //    map.GetComponent<Image>().color = Color.white;
-            //}
-            //else if (cuebState[i].name[0] == 'r')
-            //{
-            //    map.GetComponent<Image>().color = new Color(7,236,0);
-            //}
-            if (cuebState[0].name[0] == 'u')
+            if (cuebState[i].name[0] == 'f')
             {
-                print("up");
+                map.GetComponent<Image>().color = Color.red;
+            }
+            else if (cuebState[i].name[0] == 'b')
+            {
+                map.GetComponent<Image>().color = new Color(241, 255, 0);
+            }
+            else if (cuebState[i].name[0] == 'l')
+            {
+                map.GetComponent<Image>().color = Color.white;
+            }
+            else if (cuebState[i].name[0] == 'r')
+            {
+                map.GetComponent<Image>().color = Color.green;
+            }
+            else if (cuebState[i].name[0] == 'u')
+            {
                 map.GetComponent<Image>().color = new Color(0,41,255);
             }
-            //else if (cuebState[i].name[0] == 'd')
-            //{
-            //    map.GetComponent<Image>().color = new Color(161,55,0);
-            //}
-            //i++;
+            else if (cuebState[i].name[0] == 'd')
+            {
+                map.GetComponent<Image>().color = new Color(255, 0, 235);
+            }
+            i++;
         }
     }
 }
