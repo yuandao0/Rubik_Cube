@@ -14,7 +14,7 @@ public class CubeMap : MonoBehaviour
     public Transform back;
     private ReadSurface cubeState;
 
-    public void SetColor()
+    public void SetColor()//设置方块的颜色
     {
         cubeState = FindObjectOfType<ReadSurface>();
 

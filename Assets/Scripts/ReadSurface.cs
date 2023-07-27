@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class ReadSurface : MonoBehaviour
     public List<Transform> rays = new List<Transform>(6);
     int layerMask = 1 << 3; // Layer mask for cube object
 
-    [Header("CubeState")]
+    [Header("CubeState")]//方块的颜色名称
      public List<GameObject> frontState = new List<GameObject>();
      public List<GameObject> backState = new List<GameObject>();
      public List<GameObject> upState = new List<GameObject>();
@@ -22,6 +23,7 @@ public class ReadSurface : MonoBehaviour
      public List<GameObject> leftState = new List<GameObject>();
      public List<GameObject> rightState= new List<GameObject>();
 
+    //射线
      List<GameObject> frontRays = new List<GameObject>();
      List<GameObject> backRays = new List<GameObject>();
      List<GameObject> upRays = new List<GameObject>();
@@ -38,10 +40,10 @@ public class ReadSurface : MonoBehaviour
 
     void Update()
     {
-        ReadState();
+        //ReadState();
     }
 
-    public void ReadState()
+    public void ReadState()//射线在主射线方向上检测，返回检测到的物体
     {
         cubeMap = FindObjectOfType<CubeMap>();
 
@@ -52,10 +54,10 @@ public class ReadSurface : MonoBehaviour
         frontState = ReadFace(frontRays, rays[4]);
         backState = ReadFace(backRays, rays[5]);
 
-        cubeMap.SetColor();
+        cubeMap.SetColor();//更新颜色
     }
 
-    public List<GameObject> ReadFace(List<GameObject>rayStarts, Transform rayTransform)
+    public List<GameObject> ReadFace(List<GameObject>rayStarts, Transform rayTransform)//用射线检测面，检测到则返回物体列表
     {
         List<GameObject> hitFace = new List<GameObject>();
         foreach(GameObject rayStart in rayStarts)
@@ -99,7 +101,7 @@ public class ReadSurface : MonoBehaviour
         return rays;
     }
 
-    private void SetTranforms()
+    private void SetTranforms()//产生检测射线
     {
 
         upRays = BuildRays(rays[0], Vector3.right*90);
@@ -110,6 +112,30 @@ public class ReadSurface : MonoBehaviour
         backRays = BuildRays(rays[5], Vector3.up * 90);
     }
 
+    public void PickUp(List<GameObject> cubeFace)//设置面所在的表的中心
+    {
+        foreach(GameObject face in cubeFace)
+        {
+            // attach the parent of each face (the little cube)
+            // to the parent of the 4th index (the little cube in the middle)
+            // unless it is already the 4th index
+            if(face != cubeFace[4])
+            {
+                face.transform.parent.transform.parent = cubeFace[4].transform.parent; //将父物体的父物体设置为另一个父物体的父物体
+            }
+        }
+        //start the side rotaton logic
+        cubeFace[4].transform.parent.GetComponent<PivotRotation>().Rotate(cubeFace);//调用了 cubeFace 列表中索引为 4 的方块所在的面的父物体上挂载的 PivotRotation 组件的 Rotate 方法
+    }
 
-
+    public void PutDown(List<GameObject> littleCubes,Transform  pivot)//转完后撤销打组
+    {
+        foreach(GameObject littleCube in littleCubes)
+        {
+            if (littleCube != littleCubes[4])
+            {
+                littleCube.transform.parent.transform.parent = pivot;
+            }
+        }
+    }
 }
