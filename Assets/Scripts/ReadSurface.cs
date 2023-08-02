@@ -80,12 +80,12 @@ public class ReadSurface : MonoBehaviour
         int rayCount = 0;
         List<GameObject> rays = new List<GameObject>();
         
-        // |0|1|2|
-        // |3|4|5|
+        // |1|2|3|
+        // |4|5|6|
         // |7|8|9|
-        for(int y=1;y>-2;y--)
+        for(int x = 1; x > -2; x--)
         {
-            for(int x=-1;x<2;x++)
+            for(int y = -1; y < 2; y++)
             {
                 //Vector3 startPos = new Vector3 (rayTranform.localPosition.x + y ,
                 //                               rayTranform.localPosition.y + x,
@@ -110,6 +110,12 @@ public class ReadSurface : MonoBehaviour
         rightRays = BuildRays(rays[3], Vector3.up * 180);
         frontRays = BuildRays(rays[4], -Vector3.up * 90);
         backRays = BuildRays(rays[5], Vector3.up * 90);
+
+        rays[0].transform.Rotate(0, 0, 90);
+        rays[1].transform.Rotate(0, 0, 270);
+        rays[2].transform.Rotate(0, 0,270 );
+        //rays[4].transform.Rotate(0, 0,90);
+        //rays[5].transform.Rotate(0, 0,90);
     }
 
     public void PickUp(List<GameObject> cubeFace)//设置面所在的表的中心
