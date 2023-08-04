@@ -81,6 +81,15 @@ public class PivotRotation : MonoBehaviour
 
     }
 
+    public void StartAutoRotate(List<GameObject> side, float angle)
+    {
+        readSurface.PickUp(side);
+        Vector3 localForward = Vector3.zero - side[4].transform.parent.transform.localPosition;
+        targetQuaternion = Quaternion.AngleAxis(angle, localForward) * transform.localRotation;
+        activeSide = side;
+        autoRotating = true;
+    }
+
     public void RotateToRightAngle()//×ª90¶È
     {
         Vector3 vec = transform.localEulerAngles; 
@@ -104,8 +113,12 @@ public class PivotRotation : MonoBehaviour
             //unparent the little cubs
             readSurface.PutDown(activeSide,transform.parent);
             readSurface.ReadState();
+            ReadSurface.autoRotating = false;
             autoRotating=false;
             dragging= false;
         }
     }
 }
+
+
+

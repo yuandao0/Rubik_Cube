@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class SelectFace : MonoBehaviour
@@ -39,7 +40,8 @@ public class SelectFace : MonoBehaviour
                 {
                     if(cubeFace.Contains(face))
                     {
-                        cubeState.PickUp(cubeFace);//设置它的中心和旋转
+                        cubeState.PickUp(cubeFace); //设置它的中心和旋转
+                        //cubeFace[4].transform.parent.GetComponent<PivotRotation>().Rotate(cubeFace); //start the side rotation logic
                     }
                 }
             }

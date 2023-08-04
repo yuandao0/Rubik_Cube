@@ -12,7 +12,7 @@ using UnityEngine;
 public class ReadSurface : MonoBehaviour
 {
     public GameObject emptyGO;
-    public List<Transform> rays = new List<Transform>(6);
+    public List<Transform> rays = new List<Transform>();
     int layerMask = 1 << 3; // Layer mask for cube object
 
     [Header("CubeState")]//方块的颜色名称
@@ -32,10 +32,15 @@ public class ReadSurface : MonoBehaviour
      List<GameObject> rightRays = new List<GameObject>();
      
     CubeMap cubeMap;
+    public static bool autoRotating = false;
+    public static bool started = false;
+
     void Start()
     {
         SetTranforms();
         cubeMap = FindObjectOfType<CubeMap>();
+        ReadState();
+        started= true;
     }
 
     void Update()
@@ -145,3 +150,5 @@ public class ReadSurface : MonoBehaviour
         }
     }
 }
+
+
