@@ -16,7 +16,7 @@ public class SelectFace : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0) && !ReadSurface.autoRotating)
         {
             cubeState.ReadState();
 

@@ -14,10 +14,12 @@ public class Automate : MonoBehaviour
     };
 
     private ReadSurface cubeState;
+    private SolveTwoPhase solveTwoPhase;
 
     void Start()
     {
         cubeState = FindObjectOfType<ReadSurface>();
+        solveTwoPhase = FindObjectOfType<SolveTwoPhase>();
         moveList = new List<string>();
         ReadSurface.autoRotating = false;
         ReadSurface.started = false;
@@ -32,7 +34,7 @@ public class Automate : MonoBehaviour
             //remove the move at the index
             //moveList.Remove(moveList[0]);
             moveList.RemoveAt(0);
-        }    
+        }
     }
 
     public void Shuffle()
@@ -51,77 +53,62 @@ public class Automate : MonoBehaviour
     {
         cubeState.ReadState();
         ReadSurface.autoRotating = true;
-        if (move == "U")
+        switch (move)
         {
-            RotateSide(cubeState.upState, -90);           
-        }
-        if (move == "U'")
-        {
-            RotateSide(cubeState.upState, 90);
-        }
-        if (move == "U2")
-        {
-            RotateSide(cubeState.upState, -180);
-        }
-        if (move == "D")
-        {
-            RotateSide(cubeState.downState, -90);           
-        }
-        if (move == "D'")
-        {
-            RotateSide(cubeState.downState, 90);
-        }
-        if (move == "D2")
-        {
-            RotateSide(cubeState.downState, -180);
-        }
-        if (move == "L")
-        {
-            RotateSide(cubeState.leftState, -90);
-        }
-        if (move == "L'")
-        {
-            RotateSide(cubeState.leftState, 90);
-        }
-        if (move == "L2")
-        {
-            RotateSide(cubeState.leftState, -180);
-        }
-        if (move == "R")
-        {
-            RotateSide(cubeState.rightState, -90);
-        }
-        if (move == "R'")
-        {
-            RotateSide(cubeState.rightState, 90);
-        }
-        if (move == "R2")
-        {
-            RotateSide(cubeState.rightState, -180);
-        }
-        if (move == "F")
-        {
-            RotateSide(cubeState.frontState, -90);
-        }
-        if (move == "F'")
-        {
-            RotateSide(cubeState.frontState, 90);
-        }
-        if (move == "F2")
-        {
-            RotateSide(cubeState.frontState, -180);
-        }
-        if (move == "B")
-        {
-            RotateSide(cubeState.backState, -90);
-        }
-        if (move == "B'")
-        {
-            RotateSide(cubeState.backState, 90);
-        }
-        if (move == "B2")
-        {
-            RotateSide(cubeState.backState, -180);
+            case "U":
+                RotateSide(cubeState.upState, -90);
+                break;
+            case "U'":
+                RotateSide(cubeState.upState, 90);
+                break;
+            case "U2":
+                RotateSide(cubeState.upState, -180);
+                break;
+            case "D":
+                RotateSide(cubeState.downState, -90);
+                break;
+            case "D'":
+                RotateSide(cubeState.downState, 90);
+                break;
+            case "D2":
+                RotateSide(cubeState.downState, -180);
+                break;
+            case "L":
+                RotateSide(cubeState.leftState, -90);
+                break;
+            case "L'":
+                RotateSide(cubeState.leftState, 90);
+                break;
+            case "L2":
+                RotateSide(cubeState.leftState, -180);
+                break;
+            case "R":
+                RotateSide(cubeState.rightState, -90);
+                break;
+            case "R'":
+                RotateSide(cubeState.rightState, 90);
+                break;
+            case "R2":
+                RotateSide(cubeState.rightState, -180);
+                break;
+            case "F":
+                RotateSide(cubeState.frontState, -90);
+                break;
+            case "F'":
+                RotateSide(cubeState.frontState, 90);
+                break;
+            case "F2":
+                RotateSide(cubeState.frontState, -180);
+                break;
+            case "B":
+                RotateSide(cubeState.backState, -90);
+                break;
+            case "B'":
+                RotateSide(cubeState.backState, 90);
+                break;
+            case "B2":
+                RotateSide(cubeState.backState, -180);
+                break;
         }
     }
 

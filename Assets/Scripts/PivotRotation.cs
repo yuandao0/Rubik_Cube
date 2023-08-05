@@ -22,10 +22,10 @@ public class PivotRotation : MonoBehaviour
         readSurface=FindObjectOfType<ReadSurface>();
     }
 
-    // Update is called once per frame
-    void Update()
+    //Late Update is called once per frame at the end
+    void LateUpdate()
     {
-        if(dragging)
+        if(dragging && !autoRotating)
         {
             SpinSide(activeSide);
             if(Input.GetMouseButtonUp(0))

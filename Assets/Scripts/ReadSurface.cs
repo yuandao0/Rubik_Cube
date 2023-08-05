@@ -33,7 +33,7 @@ public class ReadSurface : MonoBehaviour
      
     CubeMap cubeMap;
     public static bool autoRotating = false;
-    public static bool started = false;
+    public static bool started = false; //?
 
     void Start()
     {
@@ -148,6 +148,28 @@ public class ReadSurface : MonoBehaviour
                 littleCube.transform.parent.transform.parent = pivot;
             }
         }
+    }
+
+    string GetSideString(List<GameObject> side)
+    {
+        string sideString ="";
+        foreach(GameObject face in side)
+        {
+            sideString+= char.ToUpper( face.name[0]);
+        }
+        return sideString;
+    }
+
+    public string GetStateString()
+    {
+        string stateString = "";
+        stateString += GetSideString(upState);
+        stateString += GetSideString(rightState);
+        stateString += GetSideString(frontState);
+        stateString += GetSideString(downState);
+        stateString += GetSideString(leftState);
+        stateString += GetSideString(backState);
+        return stateString;
     }
 }
 
