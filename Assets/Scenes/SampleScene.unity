@@ -223,8 +223,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8a26e7250d11d046862322042a1b80e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveList:
-  - U
+  moveList: []
+  shuffleButton: {fileID: 1797096176}
+  uiEnabled: 1
 --- !u!114 &9530892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,7 +238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06fbc545806bc942a7c422dfdf33263, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReadSurface: {fileID: 0}
+  doOnce: 1
 --- !u!1 &25233783
 GameObject:
   m_ObjectHideFlags: 0

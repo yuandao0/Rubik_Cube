@@ -40,7 +40,7 @@ public class ReadSurface : MonoBehaviour
         SetTranforms();
         cubeMap = FindObjectOfType<CubeMap>();
         ReadState();
-        started= true;
+        started = true;
     }
 
     void Update()

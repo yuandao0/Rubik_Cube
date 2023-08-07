@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEditorInternal.VersionControl.ListControl;
 
 public class Automate : MonoBehaviour
@@ -16,13 +17,15 @@ public class Automate : MonoBehaviour
     private ReadSurface cubeState;
     private SolveTwoPhase solveTwoPhase;
 
+    public  bool shuffled = false; 
+
     void Start()
     {
         cubeState = FindObjectOfType<ReadSurface>();
         solveTwoPhase = FindObjectOfType<SolveTwoPhase>();
         moveList = new List<string>();
         ReadSurface.autoRotating = false;
-        ReadSurface.started = false;
+        ReadSurface.started = false;//确保表格初始化完成
     }
 
     void Update()
@@ -39,14 +42,31 @@ public class Automate : MonoBehaviour
 
     public void Shuffle()
     {
-        List<string> moves= new List<string>();
+        //List<string> moves= new List<string>();
+        //int shuffleLength = Random.Range(5, 10);
+        //for(int i = 0;i<shuffleLength;i++)
+        //{
+        //    int randomMove = Random.Range(0, allMoves.Count);
+        //    moves.Add(allMoves[randomMove]);
+        //}
+        //moveList = moves;
+        if(!shuffled && !solveTwoPhase.solved)
+            StartCoroutine(ShuffleContine());
+    }
+
+    IEnumerator ShuffleContine()
+    {
+        shuffled=true;
+        List<string> moves = new List<string>();
         int shuffleLength = Random.Range(5, 10);
-        for(int i = 0;i<shuffleLength;i++)
+        for (int i = 0; i < shuffleLength; i++)
         {
             int randomMove = Random.Range(0, allMoves.Count);
             moves.Add(allMoves[randomMove]);
         }
         moveList = moves;
+        yield return new WaitForSeconds(4f);
+        shuffled = false;
     }
 
     void DoMove(string move)

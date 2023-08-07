@@ -1,58 +1,58 @@
 using Kociemba;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SolveTwoPhase : MonoBehaviour
 {
      ReadSurface ReadSurface;
      Automate automate;
-     public bool doOnce = true;
 
+    public bool solved=false;
     void Start()
     {
         ReadSurface = FindObjectOfType<ReadSurface>();
         automate = FindObjectOfType<Automate>();
     }
-
-    void Update()
-    {
-        if(ReadSurface.started && doOnce )
-        {
-            doOnce = false;
-            Solver();
-        }
-    }
-
     public void Solver()
     {
-        ReadSurface.ReadState();
+        if (!solved)
+            StartCoroutine(SolveCoroutine());
+    }
 
-        //get the state of the cubr as a string
-        string moveString = ReadSurface.GetStateString();
+    IEnumerator SolveCoroutine() //用协程来保证完整执行完毕
+    {
+        if(!automate.shuffled)
+        {
+            solved= true;
+            ReadSurface.ReadState();
 
-        //solve the cube
-        string info = "";
-        //first time build the tables
-        //string solution = SearchRunTime.solution(moveString, out info, buildTables: true);
+            // 获取魔方状态的字符串表示
+            string moveString = ReadSurface.GetStateString();
 
-        //every other time
-        string solution = Search.solution(moveString, out info);
+            // 求解魔方
+            string info = "";
+            string solution = Search.solution(moveString, out info);
 
-        //convert the solved moves from a string to a list
-        List<string > solutionList = StringToList(solution);
+            // 将解决的步骤从字符串转换为列表
+            List<string> solutionList = StringToList(solution);
 
-        //Automate the list
-        automate.moveList = solutionList;
-        print("Solution: " + solution);
-        print("Moves Count: " + solutionList.Count);
-        print(info);
+            // 自动执行步骤列表
+            automate.moveList = solutionList;
+
+            print(info);
+        }
+        yield return new WaitForSeconds(6f);
+        solved = false;
+
     }
 
     List<string> StringToList(string solution)
     {
-        List<string> solutionList = new List<string>(solution.Split(new string[] {""},System.StringSplitOptions.RemoveEmptyEntries));
-
+        //List<string> solutionList = new List<string>(solution.Split(new string[] {""},System.StringSplitOptions.RemoveEmptyEntries));
+        List<string> solutionList = new List<string>(solution.Split(' ', System.StringSplitOptions.RemoveEmptyEntries));
         return solutionList;
     }
 }
